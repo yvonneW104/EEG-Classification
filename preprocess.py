@@ -1,18 +1,13 @@
 import os
 import h5py
 import numpy as np
-import torch
 
-def one_hot(y_):
-    y_ = y_.reshape(len(y_))
-    n_values = np.max(y_) + 1
-    return np.eye(n_values)[np.array(y_, dtype=np.int32)]
 
-def load_data(data_dir, data_size=9, train_proportion=0.8, num_test=50, data_shape=[-1, 1, 22, 1000]):
+def load_data(data_dir, data_size=9, train_proportion=0.8, num_test=50, data_shape=[-1, 1, 22, 1000], do_nrom=False):
     data = {}
     for i in range(data_size):
         data_name = [fn for fn in os.listdir(data_dir) if fn.startswith('A0%d'%(i+1)) and fn.endswith('.mat')]
-        assert len(data_name) == 1
+        #assert len(data_name) == 1
 
         data_path = os.path.join(data_dir, data_name[0])
         A0xT = h5py.File(data_path, 'r')
@@ -36,12 +31,13 @@ def load_data(data_dir, data_size=9, train_proportion=0.8, num_test=50, data_sha
                 data[key] = np.concatenate((data[key], sub_data[key]), axis=0)
 
     # normalize dataset
-    # full_dataset = np.concatenate((data['X_train'], data['X_val'], data['X_test']), axis=0)
-    # mean = np.mean(full_dataset, axis=0)
-    # std = np.std(full_dataset, axis=0)
-    # data['X_train'] = (data['X_train'] - mean) / std
-    # data['X_val'] = (data['X_val'] - mean) / std
-    # data['X_test'] = (data['X_test'] - mean) / std
+    if do_nrom:
+        full_dataset = np.concatenate((data['X_train'], data['X_val'], data['X_test']), axis=0)
+        mean = np.mean(full_dataset, axis=0)
+        std = np.std(full_dataset, axis=0)
+        data['X_train'] = (data['X_train'] - mean) / std
+        data['X_val'] = (data['X_val'] - mean) / std
+        data['X_test'] = (data['X_test'] - mean) / std
 
     # shuffle train data
     data['X_train'], data['y_train'] = shuffle(data['X_train'], data['y_train'])

@@ -1,0 +1,30 @@
+Epoch:  99  |training loss 18.9210  |training accuracy 0.9500  |cost 0.3478 seconds  |best validation acc : 0.6458
+best model saved in  model/CnnNet1d_1dataset/network_model.dat
+========================= Finish training ==========================
+test accuracy is 0.6000
+train_acc =  1.0
+val_acc_his =  0.6458333333333334
+
+2
+test accuracy is 0.2000
+
+3
+test accuracy is 0.5200
+
+4
+test accuracy is 0.4200
+
+5
+test accuracy is 0.4600
+
+6
+test accuracy is 0.4400
+
+7
+test accuracy is 0.3600
+
+8
+test accuracy is 0.3400
+
+9
+test accuracy is 0.4600

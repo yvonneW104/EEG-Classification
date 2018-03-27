@@ -117,20 +117,24 @@ class Solver(object):
 
             if not epoch % self.save_check_epoch:
                 self.save_model()
-            # self.print_figure()
+            self.print_figure()
             epoch_end_time = time.time()
 
-            print('Epoch: ', epoch, ' |training loss %.4f' % train_loss, ' |train_acc %.4f' % train_acc,
-                  ' |best validation acc : %.4f' % best_val_accuracy, ' |cost %.4f seconds' % (epoch_end_time - epoch_start_time))
+            print('Epoch: ', epoch,
+                  ' |training loss %.4f' % train_loss,
+                  ' |training accuracy %.4f' % train_acc,
+                  ' |cost %.4f seconds' % (epoch_end_time - epoch_start_time),
+                  ' |best validation acc : %.4f' % best_val_accuracy)
         plt.ioff()
-        # self.save_figure()
+        self.save_training_his()
+        self.save_figure()
         self.save_model()
 
     def print_figure(self):
         plt.figure(1, figsize=(20, 10))
         plt.clf()
         plt.title('Accuracy over steps')
-        plt.xlabel('epoch')
+        plt.xlabel('iterations')
         plt.ylabel('accuracy')
         plt.plot(self.train_acc_his)
         plt.plot(self.val_acc_his)
@@ -139,7 +143,7 @@ class Solver(object):
         plt.figure(2, figsize=(20, 10))
         plt.clf()
         plt.title('Training loss over steps')
-        plt.xlabel('epoc')
+        plt.xlabel('iterations')
         plt.ylabel('training loss')
         plt.plot(self.train_loss_his)
         plt.legend(['training_loss'])
@@ -174,3 +178,7 @@ class Solver(object):
         plt.legend(['training_loss'])
         plt.savefig(os.path.join(self.save_path, 'loss.png'))
 
+    def save_training_his(self):
+        np.save(os.path.join(self.save_path, 'train_acc_his'), self.train_acc_his)
+        np.save(os.path.join(self.save_path, 'val_acc_his'), self.val_acc_his)
+        np.save(os.path.join(self.save_path, 'training_los_his'), self.train_loss_his)
